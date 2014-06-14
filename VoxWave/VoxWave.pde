@@ -79,11 +79,11 @@ void drawDemo(int time) {
   // and time-based sync done in code
   
   // Draw centered unit circle
-  ellipse(0., 0., 1.0, 1.0);
+  // ellipse(0., 0., 1.0, 1.0);
   
   // The following lines draw a full-screen quad.
   // Params for rect: x, y, width, height
-  // rect(-ASPECT_RATIO, -1, 2*ASPECT_RATIO, 2);
+  rect(1,0,5,1,-0,5);
 }
 
 /*
@@ -93,25 +93,25 @@ void drawDemo(int time) {
  */
 void drawAxes() {
   // Drawing options for axes
-  stroke(255);
-  strokeWeight(0.004);
+  //stroke(255);
+  //strokeWeight(0.004);
   fill(255);
 
   // X-axis
-  line(-ASPECT_RATIO, 0, ASPECT_RATIO, 0); 
-  pushMatrix();
-  resetMatrix();
-  text(String.format("%.3f", -ASPECT_RATIO), 12, CANVAS_HEIGHT/2);
-  text(String.format("%.3f", ASPECT_RATIO), CANVAS_WIDTH-42, CANVAS_HEIGHT/2);
-  popMatrix();
+  //line(-ASPECT_RATIO, 0, ASPECT_RATIO, 0); 
+  //pushMatrix();
+  //resetMatrix();
+  //text(String.format("%.3f", -ASPECT_RATIO), 12, CANVAS_HEIGHT/2);
+  //text(String.format("%.3f", ASPECT_RATIO), CANVAS_WIDTH-42, CANVAS_HEIGHT/2);
+  //popMatrix();
   
   // Y-axis
-  line(0, -1, 0, 1);
-  pushMatrix();
-  resetMatrix();
-  text("1", CANVAS_WIDTH/2+12, 12);
-  text("-1", CANVAS_WIDTH/2+12, CANVAS_HEIGHT - 12);
-  popMatrix();
+  //line(0, -1, 0, 1);
+  //pushMatrix();
+  //resetMatrix();
+  //text("1", CANVAS_WIDTH/2+12, 12);
+  //text("-1", CANVAS_WIDTH/2+12, CANVAS_HEIGHT - 12);
+  //popMatrix();
 }
 
 /*
