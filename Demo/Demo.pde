@@ -39,7 +39,8 @@ Minim minim;
 AudioPlayer song;
 Moonlander moonlander;
 
-
+ArrayList<Ball> balls;
+float ellipseSize = 0;
 /*
  * Sets up audio playing: call this last in setup()
  * so that the song doesn't start to play too early.
@@ -72,6 +73,8 @@ void setup() {
   fill(255);
   smooth();
 
+  balls = new ArrayList<Ball>();
+
   setupAudio();
   moonlander.start();
 }
@@ -82,15 +85,23 @@ void setup() {
  */
 void drawDemo(int time) {
   int red = moonlander.getIntValue("red");
-
-  // All values in Rocket are floats; however, there's
-  // a shortcut for querying integer value (getIntValue)
-  // so you don't need to cast.
   int green = moonlander.getIntValue("green");
   int blue = moonlander.getIntValue("blue");
+
+  ellipseMode(CENTER);
+
   fill(red, green, blue);
-  if (time < 5) {
-    ellipse(0., 0., 1.0, 1.0);
+  balls.add(new Ball(random(-ASPECT_RATIO, ASPECT_RATIO), random(0, 1), ASPECT_RATIO, 0.1));
+  for (Ball ball : balls) {
+    ball.run();
+  }
+  if (balls.size() >= 1000) {
+    balls.remove(0);
+  }
+
+  if (time > 10000) {
+    ellipseSize += 0.005;
+    ellipse(0, 0, ellipseSize * ASPECT_RATIO, ellipseSize);
   }
 }
 
@@ -128,6 +139,7 @@ void drawAxes() {
  */
 void draw() {
   // Reset all transformations.
+  clear();
   resetMatrix();
   moonlander.update();
 
@@ -152,7 +164,7 @@ void draw() {
   // Draw coordinate axes for reference.
   //drawAxes();
   // Draw demo at the current song position.
-  drawDemo(song.position());
+  drawDemo(song.position() * 1000);
 }
 
 void keyPressed() {
