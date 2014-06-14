@@ -50,7 +50,7 @@ float ellipseSize = 0;
  */
 void setupAudio() {
   minim = new Minim(this);
-  song = minim.loadFile("../common/tekno_127bpm.mp3");
+  song = minim.loadFile("../common/Graffathon.mp3");
   // Uncomment this if you want the demo to start instantly
   // song.play();
 }
@@ -65,7 +65,7 @@ void setup() {
   // respectively for accelerated 2D/3D graphics).
   size(CANVAS_WIDTH, CANVAS_HEIGHT, P2D);
 
-  moonlander = Moonlander.initWithSoundtrack(this, "../common/tekno_127bpm.mp3", 127, 8);
+  moonlander = Moonlander.initWithSoundtrack(this, "../common/Graffathon.mp3", 150, 8);
 
   // Drawing options that don't change, modify as you wish
   frameRate(60);

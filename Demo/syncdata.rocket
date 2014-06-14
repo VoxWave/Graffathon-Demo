@@ -1,13 +1,33 @@
 <sync rows="128">
 	<tracks>
 		<track name="red">
-			<key row="0" value="255" interpolation="0"/>
+			<key row="0" value="255" interpolation="1"/>
+			<key row="7" value="0" interpolation="0"/>
+			<key row="8" value="255" interpolation="0"/>
+			<key row="9" value="0" interpolation="0"/>
+			<key row="20" value="255" interpolation="0"/>
+			<key row="21" value="0" interpolation="0"/>
+			<key row="24" value="0" interpolation="0"/>
 		</track>
 		<track name="green">
-			<key row="0" value="0" interpolation="0"/>
+			<key row="0" value="0" interpolation="1"/>
+			<key row="7" value="255" interpolation="0"/>
+			<key row="8" value="255" interpolation="0"/>
+			<key row="9" value="0" interpolation="0"/>
+			<key row="10" value="255" interpolation="0"/>
+			<key row="16" value="0" interpolation="0"/>
+			<key row="20" value="255" interpolation="0"/>
+			<key row="21" value="0" interpolation="0"/>
+			<key row="24" value="255" interpolation="0"/>
 		</track>
 		<track name="blue">
 			<key row="0" value="0" interpolation="0"/>
+			<key row="8" value="255" interpolation="0"/>
+			<key row="9" value="0" interpolation="0"/>
+			<key row="16" value="255" interpolation="0"/>
+			<key row="20" value="255" interpolation="0"/>
+			<key row="21" value="0" interpolation="0"/>
+			<key row="24" value="0" interpolation="0"/>
 		</track>
 	</tracks>
 	<bookmarks/>
