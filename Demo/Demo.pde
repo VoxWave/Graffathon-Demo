@@ -1,3 +1,4 @@
+
 /* 
  * A simple example of how to use
  * Processing as a demo platform.
@@ -8,7 +9,7 @@
  *  - Music playback with Minim
  *  - Simple play/pause/seek-functionality
  */
- 
+
 // Minim is needed for the music playback.
 import ddf.minim.spi.*;
 import ddf.minim.signals.*;
@@ -16,13 +17,14 @@ import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.ugens.*;
 import ddf.minim.effects.*;
+import moonlander.library.*;
 
 // All these you can (must) change!
 // These control how big the opened window is.
 // Before you release your demo, set these to 
 // full HD resolution (1920x1080).
-int CANVAS_WIDTH = 480;
-int CANVAS_HEIGHT = 360;
+int CANVAS_WIDTH = 1280;
+int CANVAS_HEIGHT = 720;
 
 // You can skip backwards/forwards in your demo by using the 
 // arrow keys; this controls how many milliseconds you skip
@@ -35,6 +37,7 @@ float ASPECT_RATIO = (float)CANVAS_WIDTH/CANVAS_HEIGHT;
 // Needed for audio
 Minim minim;
 AudioPlayer song;
+Moonlander moonlander;
 
 
 /*
@@ -61,6 +64,8 @@ void setup() {
   // respectively for accelerated 2D/3D graphics).
   size(CANVAS_WIDTH, CANVAS_HEIGHT, P2D);
 
+  moonlander = Moonlander.initWithSoundtrack(this, "../common/tekno_127bpm.mp3", 127, 8);
+
   // Drawing options that don't change, modify as you wish
   frameRate(60);
   noStroke();
@@ -68,6 +73,7 @@ void setup() {
   smooth();
 
   setupAudio();
+  moonlander.start();
 }
 
 /*
@@ -75,15 +81,17 @@ void setup() {
  *
  */
 void drawDemo(int time) {
-  // TODO: implement some example drawing
-  // and time-based sync done in code
-  
-  // Draw centered unit circle
-  ellipse(0., 0., 1.0, 1.0);
-  
-  // The following lines draw a full-screen quad.
-  // Params for rect: x, y, width, height
-  // rect(-ASPECT_RATIO, -1, 2*ASPECT_RATIO, 2);
+  int red = moonlander.getIntValue("red");
+
+  // All values in Rocket are floats; however, there's
+  // a shortcut for querying integer value (getIntValue)
+  // so you don't need to cast.
+  int green = moonlander.getIntValue("green");
+  int blue = moonlander.getIntValue("blue");
+  fill(red, green, blue);
+  if (time < 5) {
+    ellipse(0., 0., 1.0, 1.0);
+  }
 }
 
 /*
@@ -104,7 +112,7 @@ void drawAxes() {
   text(String.format("%.3f", -ASPECT_RATIO), 12, CANVAS_HEIGHT/2);
   text(String.format("%.3f", ASPECT_RATIO), CANVAS_WIDTH-42, CANVAS_HEIGHT/2);
   popMatrix();
-  
+
   // Y-axis
   line(0, -1, 0, 1);
   pushMatrix();
@@ -121,6 +129,7 @@ void drawAxes() {
 void draw() {
   // Reset all transformations.
   resetMatrix();
+  moonlander.update();
 
   // The following lines map coordinates so that we can
   // draw in a resolution independent coordinate system. 
@@ -134,14 +143,14 @@ void draw() {
   // already!
   translate(CANVAS_WIDTH/2.0, CANVAS_HEIGHT/2.0);
   scale(CANVAS_WIDTH/2.0/ASPECT_RATIO, -CANVAS_HEIGHT/2.0);
-  
+
   // Clear the screen after previous frame.
   // If you comment this line, you always draw on top the last frame,
   // which can lead to something interesting.
   clear();
 
   // Draw coordinate axes for reference.
-  drawAxes();
+  //drawAxes();
   // Draw demo at the current song position.
   drawDemo(song.position());
 }
@@ -151,8 +160,7 @@ void keyPressed() {
     // Left/right arrow keys: seek song
     if (keyCode == LEFT) {
       song.skip(-SONG_SKIP_MILLISECONDS);
-    } 
-    else if (keyCode == RIGHT) {
+    } else if (keyCode == RIGHT) {
       song.skip(SONG_SKIP_MILLISECONDS);
     }
   }
