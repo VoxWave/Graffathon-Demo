@@ -21,8 +21,8 @@ import ddf.minim.effects.*;
 // These control how big the opened window is.
 // Before you release your demo, set these to 
 // full HD resolution (1920x1080).
-int CANVAS_WIDTH = 480;
-int CANVAS_HEIGHT = 360;
+int CANVAS_WIDTH = 1024;
+int CANVAS_HEIGHT = 576;
 
 // You can skip backwards/forwards in your demo by using the 
 // arrow keys; this controls how many milliseconds you skip
