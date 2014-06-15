@@ -36,6 +36,7 @@ float ASPECT_RATIO = (float)CANVAS_WIDTH/CANVAS_HEIGHT;
 Minim minim;
 AudioPlayer song;
 
+PFont ps2p;
 PShape turtle;
 ArrayList<FallingTurtle> turtles;
 WavyText wt;
@@ -70,6 +71,8 @@ void setup() {
   fill(255);
   smooth();
 
+  ps2p = loadFont("../common/PressStart2P-Regular-48.vlw");
+  textFont(ps2p, 32);
   turtle = loadShape("../common/turtle_animal_lemmling.svg");
   turtles = new ArrayList<FallingTurtle>();
   wt = new WavyText();
@@ -98,10 +101,10 @@ void drawDemo(int time) {
   turtles();
   pushMatrix();
   resetMatrix();
-  text("UnkownPotato",map(0,-ASPECT_RATIO,ASPECT_RATIO,0,CANVAS_WIDTH),map(0,-1,1,0,CANVAS_HEIGHT));
+  text("UnknownPotato",map(0,-ASPECT_RATIO,ASPECT_RATIO,0,CANVAS_WIDTH),map(0,-1,1,0,CANVAS_HEIGHT));
   popMatrix();
   if (frameCount % 60 == 0) {
-    wt.displayText("unkown potato", -0.63, -0.33);
+    wt.displayText("UnknownPotato", -0.60, -0.39);
   }
   wt.run();
 }
