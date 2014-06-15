@@ -8,7 +8,7 @@
  *  - Music playback with Minim
  *  - Simple play/pause/seek-functionality
  */
- 
+
 // Minim is needed for the music playback.
 import ddf.minim.spi.*;
 import ddf.minim.signals.*;
@@ -36,6 +36,8 @@ float ASPECT_RATIO = (float)CANVAS_WIDTH/CANVAS_HEIGHT;
 Minim minim;
 AudioPlayer song;
 
+PShape turtle;
+ArrayList<FallingTurtle> turtles;
 
 /*
  * Sets up audio playing: call this last in setup()
@@ -48,7 +50,7 @@ void setupAudio() {
   minim = new Minim(this);
   song = minim.loadFile("../common/tekno_127bpm.mp3");
   // Uncomment this if you want the demo to start instantly
-  // song.play();
+  song.play();
 }
 
 /*
@@ -67,6 +69,9 @@ void setup() {
   fill(255);
   smooth();
 
+  turtle = loadShape("../common/turtle_animal_lemmling.svg");
+  turtles = new ArrayList<FallingTurtle>();
+
   setupAudio();
 }
 
@@ -77,15 +82,18 @@ void setup() {
 void drawDemo(int time) {
   // TODO: implement some example drawing
   // and time-based sync done in code
-  
-  // Draw centered unit circle
+
+    // Draw centered unit circle
   //ellipse(0., 0., 1.0, 1.0);
-  
+
   // The following lines draw a full-screen quad.
   // Params for rect: x, y, width, height
   // rect(-ASPECT_RATIO, -1, 2*ASPECT_RATIO, 2);
   
-  squares(time);
+  sky(color(0, 0, 255), color(0));
+  bg();
+  road();
+  turtles();
 }
 
 /*
@@ -106,7 +114,7 @@ void drawAxes() {
   text(String.format("%.3f", -ASPECT_RATIO), 12, CANVAS_HEIGHT/2);
   text(String.format("%.3f", ASPECT_RATIO), CANVAS_WIDTH-42, CANVAS_HEIGHT/2);
   popMatrix();
-  
+
   // Y-axis
   line(0, -1, 0, 1);
   pushMatrix();
@@ -136,14 +144,14 @@ void draw() {
   // already!
   translate(CANVAS_WIDTH/2.0, CANVAS_HEIGHT/2.0);
   scale(CANVAS_WIDTH/2.0/ASPECT_RATIO, -CANVAS_HEIGHT/2.0);
-  
+
   // Clear the screen after previous frame.
   // If you comment this line, you always draw on top the last frame,
   // which can lead to something interesting.
   clear();
 
   // Draw coordinate axes for reference.
-  drawAxes();
+  //drawAxes();
   // Draw demo at the current song position.
   drawDemo(song.position());
 }
@@ -153,8 +161,7 @@ void keyPressed() {
     // Left/right arrow keys: seek song
     if (keyCode == LEFT) {
       song.skip(-SONG_SKIP_MILLISECONDS);
-    } 
-    else if (keyCode == RIGHT) {
+    } else if (keyCode == RIGHT) {
       song.skip(SONG_SKIP_MILLISECONDS);
     }
   }
@@ -172,23 +179,54 @@ void keyPressed() {
   }
 }
 
-void squares(int time) {
+void road() {
   float spacing = 0.03;
   float width = 0.10;
   float height = 0.03;
-  float xpos = -0.5;
+  float ypos = -0.5;
   float t = 0.0017 * millis();
   float offset = -(2 * (width + spacing) / PI) * atan(1 / tan(t * PI))  + 2 * (width + spacing);
-  
+
   pushMatrix();
   translate(-ASPECT_RATIO - offset, 0);
-  println(offset);
-  
+  //println(offset);
+
   fill(255);
-  for (int i=1; i<31; i = i + 1){
-    rect(width * i + spacing * i, xpos, width, height);
+  for (int i=1; i < 31; i++) {
+    rect(width * i + spacing * i, ypos, width, height);
   }
   popMatrix();
 }
 
+void sky(color c1, color c2) {
+  float bottom = 0;
 
+  for (float i = 1; i >= bottom; i -= 0.1) {
+    stroke(lerpColor(c1, c2, norm(i, 1, bottom)));
+    line(-ASPECT_RATIO, i, ASPECT_RATIO, i);
+    //println(i);
+  }
+}
+
+void bg() {
+  noStroke();
+  fill(86, 173, 35);
+  rect(-ASPECT_RATIO, 0, 2*ASPECT_RATIO, -1);
+  fill(151);
+  rect(-ASPECT_RATIO, -0.33, 2*ASPECT_RATIO, -0.3);
+}
+
+void turtles() {
+  if (millis() % 10 == 0 ) {
+    turtles.add(new FallingTurtle(random(-ASPECT_RATIO, ASPECT_RATIO), 0.9, random(-0.1, 0.1), random(-0.1,0), random(0, 2*PI), random(-0.1, 0.1)));
+    println("a");
+  }
+  
+  for (FallingTurtle ft : turtles) {
+    ft.run();
+    println(ft.x + "," + ft.y);
+  }
+  if (turtles.size() > 50) {
+    turtles.remove(0);
+  }
+}
