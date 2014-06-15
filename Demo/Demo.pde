@@ -23,8 +23,10 @@ import moonlander.library.*;
 // These control how big the opened window is.
 // Before you release your demo, set these to 
 // full HD resolution (1920x1080).
-int CANVAS_WIDTH = 1280;
-int CANVAS_HEIGHT = 720;
+//int CANVAS_WIDTH = 1280;
+//int CANVAS_HEIGHT = 720;
+int CANVAS_WIDTH = 1920;
+int CANVAS_HEIGHT = 1080;
 
 // You can skip backwards/forwards in your demo by using the 
 // arrow keys; this controls how many milliseconds you skip
@@ -46,6 +48,7 @@ PFont ps2p;
 PShape turtle;
 ArrayList<FallingTurtle> turtles;
 WavyText wt;
+boolean greezShowed;
 /*
  * Sets up audio playing: call this last in setup()
  * so that the song doesn't start to play too early.
@@ -81,8 +84,10 @@ void setup() {
   balls = new ArrayList<Ball>();
 
   ps2p = loadFont("../common/PressStart2P-Regular-48.vlw");
+  //Source: https://www.google.com/fonts/specimen/Press+Start+2P
   textFont(ps2p, 32);
   turtle = loadShape("../common/turtle_animal_lemmling.svg");
+  //Source: http://clipartist.net/links/clipartist.net/turtle_animal_lemmling.svg
   turtles = new ArrayList<FallingTurtle>();
   wt = new WavyText();
 
@@ -103,6 +108,12 @@ void drawDemo(int time) {
 }
 
 void ballsScene(int time) {
+
+  pushMatrix();
+  resetMatrix();
+  text("Univaje", map(0, -ASPECT_RATIO, ASPECT_RATIO, 0, CANVAS_WIDTH), map(0, -1, 1, 0, CANVAS_HEIGHT));
+  popMatrix();
+
   int red = moonlander.getIntValue("red");
   int green = moonlander.getIntValue("green");
   int blue = moonlander.getIntValue("blue");
@@ -118,8 +129,8 @@ void ballsScene(int time) {
     balls.remove(0);
   }
 
-  if (time > 30000) {
-    ellipseSize += 0.005;
+  if (time > 35000) {
+    ellipseSize += 0.05;
     ellipse(0, 0, ellipseSize * ASPECT_RATIO, ellipseSize);
   }
 }
@@ -131,10 +142,14 @@ void roadScene(int time) {
   turtles();
   pushMatrix();
   resetMatrix();
-  text("Univaje", map(0, -ASPECT_RATIO, ASPECT_RATIO, 0, CANVAS_WIDTH), map(0, -1, 1, 0, CANVAS_HEIGHT));
+  text("UnknownPotato", map(-ASPECT_RATIO, -ASPECT_RATIO, ASPECT_RATIO, 0, CANVAS_WIDTH), map(0.9, -1, 1, CANVAS_HEIGHT, 0));
+  text("Music and sync: VoxWave", map(-ASPECT_RATIO, -ASPECT_RATIO, ASPECT_RATIO, 0, CANVAS_WIDTH), map(0, -1, 1, CANVAS_HEIGHT, 0));
+  text("Code: Serdion, a544jh", map(-ASPECT_RATIO, -ASPECT_RATIO, ASPECT_RATIO, 0, CANVAS_WIDTH), map(-0.1, -1, 1, CANVAS_HEIGHT, 0));
   popMatrix();
-  if (frameCount % 60 == 0) {
-    wt.displayText("UnknownPotato", -0.60, -0.39);
+  
+  if (!greezShowed) {
+    wt.displayText("UnknownPotato would like to greet these people and groups in random order: BJAKKE  LAKO  DOT  firebug  sooda  Ihan sama, joo  msqrt  Future Crew  ASD  Kewlers  Bisqwit  lft  Delma  Letixari  EKK", -0.60, -0.39);
+    greezShowed = true;
   }
   wt.run();
 }
@@ -161,7 +176,7 @@ void road() {
 void sky(color c1, color c2) {
   float bottom = 0;
 
-  for (float i = 1; i >= bottom; i -= 0.1) {
+  for (float i = 1; i >= bottom; i -= 0.01) {
     stroke(lerpColor(c1, c2, norm(i, 1, bottom)));
     line(-ASPECT_RATIO, i, ASPECT_RATIO, i);
     //println(i);

@@ -22,7 +22,7 @@ class Letter {
   }
 
   void run() {
-    x -= 0.03;
+    x -= 0.04;
     y = -map(sin(x*10), -1, 1, ymin, ymax);
     //println(x + "," + y + " ymin: " + ymin);
     display();
@@ -42,7 +42,7 @@ class WavyText {
   void displayText(String text, float ymin, float ymax) {
     for (int i = 0; i < text.length(); i++) {
       letters.add(new Letter(text.charAt(i), ymin, ymax));
-      println("adding letter");
+      //println("adding letter");
     }
   }
   
@@ -53,7 +53,7 @@ class WavyText {
   }
 
   void run() {
-    if (frameCount % 5 == 0) {
+    if (frameCount % 4 == 0) {
       emitNext();
     }
     
