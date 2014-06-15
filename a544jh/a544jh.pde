@@ -38,6 +38,7 @@ AudioPlayer song;
 
 PShape turtle;
 ArrayList<FallingTurtle> turtles;
+WavyText wt;
 
 /*
  * Sets up audio playing: call this last in setup()
@@ -71,6 +72,7 @@ void setup() {
 
   turtle = loadShape("../common/turtle_animal_lemmling.svg");
   turtles = new ArrayList<FallingTurtle>();
+  wt = new WavyText();
 
   setupAudio();
 }
@@ -94,6 +96,14 @@ void drawDemo(int time) {
   bg();
   road();
   turtles();
+  pushMatrix();
+  resetMatrix();
+  text("UnkownPotato",map(0,-ASPECT_RATIO,ASPECT_RATIO,0,CANVAS_WIDTH),map(0,-1,1,0,CANVAS_HEIGHT));
+  popMatrix();
+  if (frameCount % 60 == 0) {
+    wt.displayText("unkown potato", -0.63, -0.33);
+  }
+  wt.run();
 }
 
 /*
@@ -185,7 +195,7 @@ void road() {
   float height = 0.03;
   float ypos = -0.5;
   float t = 0.0017 * millis();
-  float offset = -(2 * (width + spacing) / PI) * atan(1 / tan(t * PI))  + 2 * (width + spacing);
+  float offset = (2 * (width + spacing) / PI) * atan(1 / tan(t * PI))  + 2 * (width + spacing);
 
   pushMatrix();
   translate(-ASPECT_RATIO - offset, 0);
@@ -219,12 +229,12 @@ void bg() {
 void turtles() {
   if (millis() % 10 == 0 ) {
     turtles.add(new FallingTurtle(random(-ASPECT_RATIO, ASPECT_RATIO), 0.9, random(-0.1, 0.1), random(-0.1,0), random(0, 2*PI), random(-0.1, 0.1)));
-    println("a");
+    //println("a");
   }
   
   for (FallingTurtle ft : turtles) {
     ft.run();
-    println(ft.x + "," + ft.y);
+    //println(ft.x + "," + ft.y);
   }
   if (turtles.size() > 50) {
     turtles.remove(0);
