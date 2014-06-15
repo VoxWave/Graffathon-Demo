@@ -41,6 +41,11 @@ Moonlander moonlander;
 
 ArrayList<Ball> balls;
 float ellipseSize = 0;
+
+PFont ps2p;
+PShape turtle;
+ArrayList<FallingTurtle> turtles;
+WavyText wt;
 /*
  * Sets up audio playing: call this last in setup()
  * so that the song doesn't start to play too early.
@@ -75,6 +80,12 @@ void setup() {
 
   balls = new ArrayList<Ball>();
 
+  ps2p = loadFont("../common/PressStart2P-Regular-48.vlw");
+  textFont(ps2p, 32);
+  turtle = loadShape("../common/turtle_animal_lemmling.svg");
+  turtles = new ArrayList<FallingTurtle>();
+  wt = new WavyText();
+
   setupAudio();
   moonlander.start();
 }
@@ -84,6 +95,14 @@ void setup() {
  *
  */
 void drawDemo(int time) {
+  if (time < 39000) {
+    ballsScene(time);
+  } else {
+    roadScene(time);
+  }
+}
+
+void ballsScene(int time) {
   int red = moonlander.getIntValue("red");
   int green = moonlander.getIntValue("green");
   int blue = moonlander.getIntValue("blue");
@@ -104,6 +123,75 @@ void drawDemo(int time) {
     ellipse(0, 0, ellipseSize * ASPECT_RATIO, ellipseSize);
   }
 }
+
+void roadScene(int time) {
+  sky(color(0, 0, 255), color(0));
+  bg();
+  road();
+  turtles();
+  pushMatrix();
+  resetMatrix();
+  text("Univaje", map(0, -ASPECT_RATIO, ASPECT_RATIO, 0, CANVAS_WIDTH), map(0, -1, 1, 0, CANVAS_HEIGHT));
+  popMatrix();
+  if (frameCount % 60 == 0) {
+    wt.displayText("UnknownPotato", -0.60, -0.39);
+  }
+  wt.run();
+}
+
+void road() {
+  float spacing = 0.03;
+  float width = 0.10;
+  float height = 0.03;
+  float ypos = -0.5;
+  float t = 0.0017 * millis();
+  float offset = (2 * (width + spacing) / PI) * atan(1 / tan(t * PI))  + 2 * (width + spacing);
+
+  pushMatrix();
+  translate(-ASPECT_RATIO - offset, 0);
+  //println(offset);
+
+  fill(255);
+  for (int i=1; i < 31; i++) {
+    rect(width * i + spacing * i, ypos, width, height);
+  }
+  popMatrix();
+}
+
+void sky(color c1, color c2) {
+  float bottom = 0;
+
+  for (float i = 1; i >= bottom; i -= 0.1) {
+    stroke(lerpColor(c1, c2, norm(i, 1, bottom)));
+    line(-ASPECT_RATIO, i, ASPECT_RATIO, i);
+    //println(i);
+  }
+}
+
+void bg() {
+  noStroke();
+  fill(86, 173, 35);
+  rect(-ASPECT_RATIO, 0, 2*ASPECT_RATIO, -1);
+  fill(151);
+  rect(-ASPECT_RATIO, -0.33, 2*ASPECT_RATIO, -0.3);
+}
+
+void turtles() {
+  if (millis() % 10 == 0 ) {
+    turtles.add(new FallingTurtle(random(-ASPECT_RATIO, ASPECT_RATIO), 0.9, random(-0.1, 0.1), random(-0.1, 0), random(0, 2*PI), random(-0.1, 0.1)));
+    //println("a");
+  }
+
+  for (FallingTurtle ft : turtles) {
+    ft.run();
+    //println(ft.x + "," + ft.y);
+  }
+  if (turtles.size() > 50) {
+    turtles.remove(0);
+  }
+}
+
+
 
 /*
  * Draws coordinate axes (for reference).
@@ -164,7 +252,7 @@ void draw() {
   // Draw coordinate axes for reference.
   //drawAxes();
   // Draw demo at the current song position.
-  drawDemo(song.position() * 1000);
+  drawDemo(millis());
 }
 
 void keyPressed() {

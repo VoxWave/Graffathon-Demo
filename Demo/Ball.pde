@@ -37,7 +37,7 @@ class Ball {
 
     if (y - size / 2 <= -1) {
       speedY = Math.abs(speedY); 
-      println(speedY);
+      //println(speedY);
     }
   }
 
