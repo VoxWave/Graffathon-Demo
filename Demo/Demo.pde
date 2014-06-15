@@ -118,7 +118,7 @@ void ballsScene(int time) {
     balls.remove(0);
   }
 
-  if (time > 10000) {
+  if (time > 30000) {
     ellipseSize += 0.005;
     ellipse(0, 0, ellipseSize * ASPECT_RATIO, ellipseSize);
   }
