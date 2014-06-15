@@ -59,7 +59,7 @@ void setupAudio() {
 void setup() {
   // Set up the drawing area size and renderer (usually P2D or P3D,
   // respectively for accelerated 2D/3D graphics).
-  size(CANVAS_WIDTH, CANVAS_HEIGHT, P2D);
+  size(CANVAS_WIDTH, CANVAS_HEIGHT, P3D);
 
   // Drawing options that don't change, modify as you wish
   frameRate(60);
@@ -79,11 +79,11 @@ void drawDemo(int time) {
   // and time-based sync done in code
   
   // Draw centered unit circle
-  // ellipse(0., 0., 1.0, 1.0);
+  ellipse(0., 0., 1.0, 1.0);
   
   // The following lines draw a full-screen quad.
   // Params for rect: x, y, width, height
-  rect(1,0,5,1,-0,5);
+  
 }
 
 /*
