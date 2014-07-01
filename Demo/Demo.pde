@@ -46,7 +46,7 @@ float ellipseSize = 0;
 
 PFont ps2p;
 PShape turtle;
-ArrayList<FallingTurtle> turtles;
+ArrayList<FallingTurtle> turtles, remove;
 WavyText wt;
 boolean greezShowed;
 /*
@@ -89,6 +89,7 @@ void setup() {
   turtle = loadShape("../common/turtle_animal_lemmling.svg");
   //Source: http://clipartist.net/links/clipartist.net/turtle_animal_lemmling.svg
   turtles = new ArrayList<FallingTurtle>();
+  remove = new ArrayList<FallingTurtle>();
   wt = new WavyText();
 
   setupAudio();
@@ -200,10 +201,12 @@ void turtles() {
   for (FallingTurtle ft : turtles) {
     ft.run();
     //println(ft.x + "," + ft.y);
+    if (ft.remove) {
+      remove.add(ft);
+    }
   }
-  if (turtles.size() > 50) {
-    turtles.remove(0);
-  }
+  turtles.removeAll(remove);
+  remove.clear();
 }
 
 

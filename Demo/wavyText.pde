@@ -22,8 +22,8 @@ class Letter {
   }
 
   void run() {
-    x -= 0.04;
-    y = -map(sin(x*10), -1, 1, ymin, ymax);
+    x -= 0.01;
+    y = -map(sin(x*10+frameCount*0.14), -1, 1, ymin, ymax);
     //println(x + "," + y + " ymin: " + ymin);
     display();
   }
@@ -53,7 +53,7 @@ class WavyText {
   }
 
   void run() {
-    if (frameCount % 4 == 0) {
+    if (frameCount % 6 == 0) {
       emitNext();
     }
     
